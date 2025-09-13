@@ -1,38 +1,26 @@
 package model;
 
 public class Account {
-    private int accountId;
-    private int userId;
+    private int id;
+    private int customerId;
     private double balance;
 
-    public Account(int accountId, int userId, double balance) {
-        this.accountId = accountId;
-        this.userId = userId;
+    public Account() {}
+
+    public Account(int id, int customerId, double balance) {
+        this.id = id;
+        this.customerId = customerId;
         this.balance = balance;
     }
 
-    // Getters and Setters
-    public int getAccountId() {
-        return accountId;
-    }
+    // getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
-    }
+    public int getCustomerId() { return customerId; }
+    public void setCustomerId(int customerId) { this.customerId = customerId; }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
+    public double getBalance() { return balance; }
+    public void setBalance(double balance) { this.balance = balance; }
+}    }
 }
