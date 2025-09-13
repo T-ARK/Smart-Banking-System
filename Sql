@@ -1,35 +1,33 @@
-CREATE TABLE Admin (
-    admin_id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) UNIQUE,
-    password VARCHAR(50)
+-- Create the database
+CREATE DATABASE IF NOT EXISTS SmartBankingSystem;
+USE SmartBankingSystem;
+
+-- Create the users table for customers, staff, and admin
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'staff', 'customer') NOT NULL
 );
 
-CREATE TABLE Staff (
-    staff_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
-    username VARCHAR(50) UNIQUE,
-    password VARCHAR(50)
+-- Create the accounts table
+CREATE TABLE accounts (
+    account_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    balance DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
-CREATE TABLE Customer (
-    customer_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
-    username VARCHAR(50) UNIQUE,
-    password VARCHAR(50)
+-- Create the transactions table
+CREATE TABLE transactions (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    account_id INT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    type ENUM('deposit', 'withdrawal') NOT NULL,
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id)
 );
 
-CREATE TABLE Account (
-    account_number INT PRIMARY KEY AUTO_INCREMENT,
-    customer_id INT,
-    balance DECIMAL(10,2) DEFAULT 0,
-    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
-);
-
-CREATE TABLE Transaction (
-    txn_id INT PRIMARY KEY AUTO_INCREMENT,
-    account_number INT,
-    type ENUM('DEPOSIT','WITHDRAW'),
-    amount DECIMAL(10,2),
-    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (account_number) REFERENCES Account(account_number)
-);
+-- Insert initial admin and staff data
+INSERT INTO users (username, password, role) VALUES ('admin', 'admin123', 'admin');
+INSERT INTO users (username, password, role) VALUES ('staff1', 'staff123', 'staff');
