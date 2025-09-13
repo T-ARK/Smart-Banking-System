@@ -2,39 +2,64 @@ package dao;
 
 import db.DBConnection;
 import model.Customer;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAO {
-    /**
-     * Authenticates a customer.
-     * @param username The customer's username.
-     * @param password The customer's password.
-     * @return A Customer object if authenticated, otherwise null.
-     */
-    public Customer login(String username, String password) {
-        String sql = "SELECT user_id, username FROM users WHERE username = ? AND password = ? AND role = 'customer'";
-        Connection conn = DBConnection.getConnection();
-        if (conn == null) return null;
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
+    public Customer login(String username, String password) {
+        String sql = "SELECT * FROM customer WHERE username = ? AND password = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Customer(rs.getInt("user_id"), rs.getString("username"));
+                return new Customer(rs.getInt("id"), rs.getString("username"), rs.getString("password"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            DBConnection.closeConnection(conn);
         }
         return null;
     }
+
+    public boolean register(Customer customer) {
+        String sql = "INSERT INTO customer (username, password) VALUES (?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, customer.getUsername());
+            ps.setString(2, customer.getPassword());
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                ResultSet keys = ps.getGeneratedKeys();
+                if (keys.next()) {
+                    customer.setId(keys.getInt(1));
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<Customer> getAllCustomers() {
+        List<Customer> list = new ArrayList<>();
+        String sql = "SELECT * FROM customer";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new Customer(rs.getInt("id"), rs.getString("username"), rs.getString("password")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+}    }
 
     /**
      * Registers a new customer.
