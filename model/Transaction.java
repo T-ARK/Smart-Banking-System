@@ -3,38 +3,38 @@ package model;
 import java.sql.Timestamp;
 
 public class Transaction {
-    private int transactionId;
+    private int id;
     private int accountId;
+    private String type; // DEPOSIT or WITHDRAW
     private double amount;
-    private String type; // 'deposit' or 'withdrawal'
-    private Timestamp transactionDate;
+    private Timestamp timestamp;
 
-    public Transaction(int transactionId, int accountId, double amount, String type, Timestamp transactionDate) {
-        this.transactionId = transactionId;
+    public Transaction() {}
+
+    public Transaction(int id, int accountId, String type, double amount, Timestamp timestamp) {
+        this.id = id;
         this.accountId = accountId;
-        this.amount = amount;
         this.type = type;
-        this.transactionDate = transactionDate;
+        this.amount = amount;
+        this.timestamp = timestamp;
     }
 
-    // Getters
-    public int getTransactionId() {
-        return transactionId;
-    }
+    // getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public int getAccountId() {
-        return accountId;
-    }
+    public int getAccountId() { return accountId; }
+    public void setAccountId(int accountId) { this.accountId = accountId; }
 
-    public double getAmount() {
-        return amount;
-    }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
 
-    public String getType() {
-        return type;
-    }
+    public double getAmount() { return amount; }
+    public void setAmount(double amount) { this.amount = amount; }
 
-    public Timestamp getTransactionDate() {
+    public Timestamp getTimestamp() { return timestamp; }
+    public void setTimestamp(Timestamp timestamp) { this.timestamp = timestamp; }
+}    public Timestamp getTransactionDate() {
         return transactionDate;
     }
 
