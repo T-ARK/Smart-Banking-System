@@ -1,4 +1,4 @@
-##Setup Instructions
+## Setup Instructions
 
 This project is a fully functional, console-based Java banking system. To run it successfully, make sure you:
 
@@ -14,7 +14,7 @@ This project is a fully functional, console-based Java banking system. To run it
 4. Run Main.java from the project root directory.
 
 
-##Important Notes
+## Important Notes
 
 Password Storage: Currently, passwords are stored in plain text for simplicity. In a real production system, implement secure password hashing (e.g., bcrypt, Argon2).
 
@@ -27,7 +27,7 @@ Input Validation: Basic input checks are included, but you may want to expand va
 JDBC Driver: Ensure that the MySQL JDBC driver (Connector/J) is available in your classpath.
 
 
-##How to test:
+## How to test:
 Create the database and tables.
 Insert the initial admin user.
 Compile and run the app.
